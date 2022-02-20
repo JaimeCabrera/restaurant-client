@@ -1,0 +1,49 @@
+.sidebar_nav_background {
+  background-color: #34495e;
+}
+.sidebar_nav {
+  color: #c1c5c7;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.5 ease-in-out;
+}
+.sidebar_nav:hover {
+  /* background-color: rgba(231, 203, 91, 0.4); */
+  color: #fff;
+  font-weight: 600;
+}
+.sidebar_nav:focus {
+  color: #d4ac0d;
+  font-weight: 600;
+}
+.sidebar_nav_active {
+  margin-bottom: 0.3rem;
+  color: #d4ac0d;
+  font-weight: 600;
+  /* background-color: #b7950b; */
+  transition: all 0.6 ease;
+}
+.sidebar_nav_active:hover {
+  color: #d4ac0d;
+}
+.sidebar_nav_active:focus {
+  color: #d4ac0d;
+}
+.active {
+  /* color: #b7950b; */
+  font-weight: 600;
+}
+/* dish page */
+.btn-add-dish {
+  background-color: #f5b041;
+  color: #34495e;
+  padding: 0.6rem;
+  text-decoration: none;
+  width: 15rem;
+  font-weight: 600;
+  border-radius: 25;
+}
+.btn-add-dish:hover {
+  color: #34495e;
+}

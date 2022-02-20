@@ -1,5 +1,14 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
+
+import { Orders } from "./pages/Orders";
 
 export const App = () => {
-  return <div className="container bg-danger">App</div>;
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Orders />} />
+      </Routes>
+    </>
+  );
 };

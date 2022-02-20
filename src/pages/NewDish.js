@@ -1,23 +1,38 @@
 import React from "react";
+import { Formik, useFormik } from "formik";
 
 export const NewDish = () => {
+  const formik = useFormik({
+    initialValues: {
+      nombre: "",
+      precio: "",
+      categoria: "",
+      imagen: "",
+      descripcion: "",
+    },
+    onSubmit: (data) => {
+      console.log(data);
+    },
+  });
   return (
     <>
       <h3>Agregar Platillo</h3>
       <div className="d-flex flex-column">
         <div className="justify-content-center">
           <div className="col-8 offset-2">
-            <div class="card mt-5">
-              <div class="card-body">
-                <form>
+            <div className="card mt-5">
+              <div className="card-body">
+                <form onSubmit={formik.handleSubmit}>
                   <div className="mb-3">
-                    <label htmlFor="name" className="form-label">
+                    <label htmlFor="nombre" className="form-label">
                       Nombre:
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      id="name"
+                      id="nombre"
+                      value={formik.values.nombre}
+                      onChange={formik.handleChange}
                       placeholder="Nombre del platillo"
                     />
                   </div>
@@ -29,6 +44,8 @@ export const NewDish = () => {
                       type="number"
                       className="form-control"
                       id="precio"
+                      value={formik.values.precio}
+                      onChange={formik.handleChange}
                       placeholder="$30"
                       min={0}
                     />
@@ -37,10 +54,12 @@ export const NewDish = () => {
                     <label htmlFor="categoria" className="form-label">
                       Categoria:
                     </label>
-                    <select className="form-select">
-                      <option selected disabled>
-                        Seleccione una categoria
-                      </option>
+                    <select
+                      className="form-select"
+                      value={formik.values.categoria}
+                      onChange={formik.handleChange}
+                    >
+                      <option disabled>Seleccione una categoria</option>
                       <option value="desayuno">Desayuno</option>
                       <option value="comida">Comida</option>
                       <option value="cena">Cena</option>
@@ -54,13 +73,21 @@ export const NewDish = () => {
                     <label htmlFor="precio" className="form-label">
                       Imagen:
                     </label>
-                    <input type="file" className="form-control" id="precio" />
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="precio"
+                      value={formik.values.imagen}
+                      onChange={formik.handleChange}
+                    />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="descripcion" className="form-label">
                       Descripcion:
                     </label>
                     <textarea
+                      value={formik.values.descripcion}
+                      onChange={formik.handleChange}
                       rows={7}
                       className="form-control"
                       id="descripcion"

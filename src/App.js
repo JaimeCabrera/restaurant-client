@@ -1,6 +1,16 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { FirebaseContext, firebase, db, addDoc, collection } from "./firebase";
+import {
+  FirebaseContext,
+  firebase,
+  db,
+  addDoc,
+  collection,
+  storage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "./firebase";
 
 import { SideBar } from "./components/ui/SideBar";
 import { Menu } from "./pages/Menu";
@@ -9,7 +19,18 @@ import { Orders } from "./pages/Orders";
 
 export const App = () => {
   return (
-    <FirebaseContext.Provider value={{ firebase, db, addDoc, collection }}>
+    <FirebaseContext.Provider
+      value={{
+        firebase,
+        db,
+        addDoc,
+        collection,
+        storage,
+        ref,
+        getDownloadURL,
+        uploadBytesResumable,
+      }}
+    >
       <div className="container-fluid">
         <div className="row vh-100">
           <SideBar />

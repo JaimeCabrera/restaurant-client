@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
-import { Formik } from "formik";
 import * as Yup from "yup";
-import { FirebaseContext, addDoc, collection } from "../firebase";
-import { Spinner } from "../components/Spinner";
+import { Formik } from "formik";
+import { FirebaseContext } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "../components/Spinner";
 
 // reglas de validacion del formulario
 const validationSchema = Yup.object().shape({
@@ -24,12 +24,64 @@ const validationSchema = Yup.object().shape({
 });
 
 export const NewDish = () => {
+  const {
+    db,
+    addDoc,
+    collection,
+    storage,
+    ref,
+    uploadBytesResumable,
+    getDownloadURL,
+  } = useContext(FirebaseContext);
+
   const [loading, setLoading] = useState(false);
+  // state para el progeso de subida del archivo
+  const [progress, setProgress] = useState(0);
+  // state para nmostar el progress
+  const [prog, setProg] = useState(false);
+  // state para la url de la imagen
+  const [imgUrl, setImgUrl] = useState("");
+  // state para manterne el boton desabilitado hasta que el form este validado
+
+  // subir la imagen
+  const handleUploadImage = (e) => {
+    console.log(e.target.files[0]);
+    if (e.target.files[0]) {
+      // inicializa el progress
+      setProg(true);
+      const { name } = e.target.files[0];
+      // console.log(e.target.files[0]);
+      const imgRef = ref(storage, `/productos/${name}`);
+      // 'file' comes from the Blob or File API
+      const uploadTask = uploadBytesResumable(imgRef, e.target.files[0]);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(progress);
+        },
+        (err) => {
+          console.log(err);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((url) => {
+              setImgUrl(url);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
+      );
+    } else {
+    }
+  };
 
   // hok para redireccionar
   const navigate = useNavigate();
-  // context con las operaciones de firebase
-  const { db } = useContext(FirebaseContext);
+
   return (
     <>
       <h4>Agregar platillo</h4>
@@ -53,6 +105,7 @@ export const NewDish = () => {
                     // same shape as initial values
                     try {
                       dish.existencia = true;
+                      dish.imagen = imgUrl;
                       setLoading(true);
                       addDoc(collection(db, "platillos"), dish)
                         .then((res) => {
@@ -75,6 +128,7 @@ export const NewDish = () => {
                     values,
                     touched,
                     handleChange,
+                    setFieldValue,
                     handleBlur,
                     handleSubmit,
                   }) => (
@@ -166,22 +220,43 @@ export const NewDish = () => {
                         </label>
                         <input
                           type="file"
+                          onChange={(e) => {
+                            // cambiadno el value del input
+                            setFieldValue("imagen", e.target.files[0]);
+                            handleUploadImage(e);
+                          }}
                           className={
                             errors.imagen && touched.imagen
                               ? "form-control is-invalid"
                               : "form-control"
                           }
-                          id="imagen"
+                          // id="imagen"
+                          name="imagen"
                           accept="image/png, image/jpeg, image/jpg"
-                          value={values.imagen}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
+                          // value={(e) => e.target.files[0]}
+                          // onChange={handleChange}
+                          // onBlur={handleBlur}
                         />
                         {errors.imagen && touched.imagen ? (
                           <div className="form-text text-danger">
                             {errors.imagen}
                           </div>
                         ) : null}
+                        {/* proggres */}
+                        {prog && (
+                          <div className="progress mt-2">
+                            <div
+                              className="progress-bar bg-success"
+                              role="progressbar"
+                              style={{ width: `${progress}%` }}
+                              aria-valuenow="25"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            >
+                              {progress}%
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <div className="mb-3">
                         <label htmlFor="descripcion" className="form-label">

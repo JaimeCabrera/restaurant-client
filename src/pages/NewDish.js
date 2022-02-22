@@ -45,13 +45,15 @@ export const NewDish = () => {
 
   // subir la imagen
   const handleUploadImage = (e) => {
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
     if (e.target.files[0]) {
       // inicializa el progress
       setProg(true);
       const { name } = e.target.files[0];
+      // para agregar una cadena unica a cada imagen y que no puedan repetirse
+      const date = new Date().getTime().toString();
       // console.log(e.target.files[0]);
-      const imgRef = ref(storage, `/productos/${name}`);
+      const imgRef = ref(storage, `/productos/${date}_${name}`);
       // 'file' comes from the Blob or File API
       const uploadTask = uploadBytesResumable(imgRef, e.target.files[0]);
       uploadTask.on(
@@ -230,12 +232,9 @@ export const NewDish = () => {
                               ? "form-control is-invalid"
                               : "form-control"
                           }
-                          // id="imagen"
                           name="imagen"
                           accept="image/png, image/jpeg, image/jpg"
-                          // value={(e) => e.target.files[0]}
-                          // onChange={handleChange}
-                          // onBlur={handleBlur}
+                          onBlur={handleBlur}
                         />
                         {errors.imagen && touched.imagen ? (
                           <div className="form-text text-danger">
@@ -244,18 +243,29 @@ export const NewDish = () => {
                         ) : null}
                         {/* proggres */}
                         {prog && (
-                          <div className="progress mt-2">
-                            <div
-                              className="progress-bar bg-success"
-                              role="progressbar"
-                              style={{ width: `${progress}%` }}
-                              aria-valuenow="25"
-                              aria-valuemin="0"
-                              aria-valuemax="100"
-                            >
-                              {progress}%
+                          <>
+                            <div className="progress mt-2">
+                              <div
+                                className="progress-bar bg-success"
+                                role="progressbar"
+                                style={{ width: `${progress}%` }}
+                                aria-valuenow="25"
+                                aria-valuemin="1"
+                                aria-valuemax="100"
+                              >
+                                {progress}%
+                              </div>
                             </div>
-                          </div>
+                            {progress !== 100 ? (
+                              <span className="text-danger fs-6 text-opacity-75">
+                                Subiendo la imagen espere...
+                              </span>
+                            ) : (
+                              <span className="text-success  fs-6 text-opacity-75">
+                                Imagen subida con exito
+                              </span>
+                            )}
+                          </>
                         )}
                       </div>
                       <div className="mb-3">

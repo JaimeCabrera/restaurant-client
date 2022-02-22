@@ -10,6 +10,10 @@ import {
   ref,
   getDownloadURL,
   uploadBytesResumable,
+  getDocs,
+  doc,
+  onSnapshot,
+  updateDoc,
 } from "./firebase";
 
 import { SideBar } from "./components/ui/SideBar";
@@ -29,6 +33,10 @@ export const App = () => {
         ref,
         getDownloadURL,
         uploadBytesResumable,
+        getDocs,
+        doc,
+        onSnapshot,
+        updateDoc,
       }}
     >
       <div className="container-fluid">

@@ -104,7 +104,7 @@ export const NewDish = () => {
                   }}
                   validationSchema={validationSchema}
                   onSubmit={(dish) => {
-                    // same shape as initial values
+                    // save data in firebase
                     try {
                       dish.existencia = true;
                       dish.imagen = imgUrl;

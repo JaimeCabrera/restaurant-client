@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, addDoc, collection } from "firebase/firestore";
+import {
+  getFirestore,
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import {
   getStorage,
   ref,
@@ -23,4 +31,8 @@ export {
   ref,
   getDownloadURL,
   uploadBytesResumable,
+  doc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
 };

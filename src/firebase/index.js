@@ -7,6 +7,10 @@ import {
   ref,
   getDownloadURL,
   uploadBytesResumable,
+  doc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
 } from "./firebase";
 import FirebaseContext from "./context";
 
@@ -20,5 +24,9 @@ export {
   ref,
   getDownloadURL,
   uploadBytesResumable,
+  doc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
 };
 // export {};
